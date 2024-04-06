@@ -1,0 +1,111 @@
+﻿@using Button.Pages
+@inject NavigationManager _navManager
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Button</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </div>
+        
+
+        @foreach (Response x in array)
+        {
+
+
+            <button class="btn btn-primary" href=@x.url)>@x.name</button>
+
+
+            <div class="nav-item px-3">
+
+                <NavLink class="nav-link" href=@x.url>
+
+                    <span class="oi oi-code" aria-hidden="true"></span> @x.name
+
+                </NavLink>
+
+            </div>
+
+            @* <button name="subject" type="button" value="@x" onclick="alert(this.value)">@x</button> *@
+        }
+
+        @* <button @onclick="@(() => OnClick.InvokeAsync("Hello from ChildComponent"))">Click me</button> *@
+
+        
+        @* <button class="btn btn-primary" @onclick=@(_=>GetValue(@x))>Pass Value</button> *@
+        @* <button class="btn btn-primary" @onclick="OnClick">Pass Value</button> *@
+
+    </nav>
+</div>
+
+@code {
+    //[Parameter] public EventCallback<string> OnClick { get; set; }
+
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    public class Response
+    {
+        public string name { get; set; }
+        public string url { get; set; }
+
+    }
+
+    List<Response> array = new List<Response> 
+    {
+            new Response {name = "swagger1", url = "http://petstore.swagger.io/v2/swagger.json" },
+            new Response {name = "swagger2", url = "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/api-with-examples.yaml" },
+            new Response {name = "swagger3", url = "http://petstore.swagger.io/v2/swagger.json" }
+    };
+
+
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        
+
+    }
+
+    string message = "Hello from ParentComponent";
+
+
+    private string parameter = "ParameterValue";
+    private void OnClick()
+    {
+        _navManager.NavigateTo($"/{parameter}");
+    }
+
+    private string GetValue(string value)
+    {
+  
+        return value;
+
+    }
+}

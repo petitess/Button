@@ -1,0 +1,119 @@
+﻿@using Button.Pages
+@inherits LayoutComponentBase
+@inject NavigationManager _navManager
+
+
+<PageTitle>Button</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+     
+        
+        
+        @foreach (Response x in array)
+        {
+            <button class="btn btn-danger"  @onclick="(() => Function(x.url, x.name))">@x.name</button>
+
+
+           @*  <button id="my_button" class="btn btn-link">@x.name</button> *@
+         
+            <div class="nav-item px-3">
+
+                <NavLink class="btn btn-success" href=@x.name @onclick="(() => Function(x.url, x.name))">
+
+                    <span class="oi oi-code" aria-hidden="true"></span> @x.name
+
+                </NavLink>
+
+            </div>
+        }
+    </div>
+    <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+             <div>HEJ @Name</div>
+            @Url
+            
+             @*     <!DOCTYPE html>
+                @if (Url != null)
+            {
+                <html>
+                <head>
+                    <title>Redoc</title>
+                    <!-- needed for adaptive design -->
+                    <meta charset="utf-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+
+                    <!--
+                    Redoc doesn't change outer page styles
+                    -->
+                    <style>
+                        body {
+                            margin: 0;
+                            padding: 0;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <redoc spec-url=@Url></redoc>
+
+                   <script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"> </script>
+                </body>
+            </html>
+       }  *@
+
+        <CascadingValue Value="@Url" >
+  <APIS /> 
+</CascadingValue> 
+
+
+        </article>
+    </main>
+</div>
+
+
+@code {
+    [Parameter]
+    public string text { get; set; }
+
+    public class Response
+    {
+        public string name { get; set; }
+        public string url { get; set; }
+    }
+
+    List<Response> array = new List<Response>
+    {
+            new Response {name = "swagger1", url = "https://petstore3.swagger.io/api/v3/openapi.json" },
+            new Response {name = "swagger2", url = "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/api-with-examples.yaml" },
+            new Response {name = "swagger3", url = "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/link-example.yaml" }
+    };
+
+    string? Url { get; set; }
+    string? Name { get; set; }
+    void Function(string x, string y)
+    {
+
+        Url = x;
+        Name = y;
+        //_navManager.NavigateTo($"/{y}");
+        //StateHasChanged();
+    }
+
+    private void RefreshMe()
+    {
+        StateHasChanged();
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+
+
+}
